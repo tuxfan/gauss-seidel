@@ -1,8 +1,8 @@
-#! /usr/bin/env gnuplot
+#!/usr/bin/env bash
 
-set dgrid3d 128,128
-set terminal x11
-splot 'solution.dat' u 1:2:3 w pm3d palette
-set terminal x11 1
-splot 'residual.dat' u 1:2:3 w pm3d palette
-pause -1
+export XLEN=$1
+export YLEN=$2
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+/usr/bin/gnuplot -p $DIR/plot.gp
