@@ -1,0 +1,56 @@
+#! /usr/bin/env bash
+#~----------------------------------------------------------------------------~#
+# placeholder
+#~----------------------------------------------------------------------------~#
+
+#------------------------------------------------------------------------------#
+# Get the path to the project from which this script was called
+#------------------------------------------------------------------------------#
+
+source_dir="$(dirname "$(cd "$(dirname "$0")"; pwd)")"
+
+#------------------------------------------------------------------------------#
+# Check command-line arguments
+#------------------------------------------------------------------------------#
+
+cmake_mode=cmake
+extra_define=""
+runtime=mpi
+
+while [[ $# -gt 0 ]]
+do
+
+	case $1 in
+		--help|-h)
+			command=`echo $0 | sed 's,.*\/,,g'`
+			echo "Usage: $command [options]"
+			echo "  -h, --help     Show this message and exit."
+			echo "  -c, --ccmake   Enable curses mode."
+			exit
+		;;
+		--ccmake|-c)
+			cmake_mode=ccmake
+		;;
+	esac
+
+	shift # next argument
+done
+
+#------------------------------------------------------------------------------#
+# Call CMake command
+#------------------------------------------------------------------------------#
+
+$cmake_mode \
+  -DCMAKE_CXX_COMPILER=icpx \
+  -DCMAKE_CXX_FLAGS="-std=c++11 -fopenmp -fopenmp-targets=csa=-fiopenmp" \
+  -DCMAKE_EXE_LINKER_FLAGS="-fopenmp -fopenmp-targets=csa=-fiopenmp" \
+  -DCMAKE_BUILD_TYPE=Release \
+  $source_dir
+
+#------------------------------------------------------------------------------#
+# vim: syntax=sh
+#------------------------------------------------------------------------------#
+
+#~---------------------------------------------------------------------------~-#
+# placeholder
+#~---------------------------------------------------------------------------~-#
