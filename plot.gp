@@ -8,4 +8,5 @@ set dgrid3d XLEN, YLEN
 set terminal x11
 splot 'solution.dat' u 1:2:3 w pm3d palette
 set terminal x11 1
-splot 'residual.dat' u 1:2:3 w pm3d palette
+splot 'error.dat' u 1:2:3 w pm3d palette
+pause -1

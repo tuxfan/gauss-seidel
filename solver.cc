@@ -107,9 +107,9 @@ int main(int argc, char ** argv) {
     // Red points
     #pragma omp target
     {
-    #pragma omp parallel
+    #pragma omp parallel for
     for(size_t j{1}; j<YLEN-1; ++j) {
-      #pragma omp parallel
+      #pragma omp parallel for
       for(size_t i{(j-1)%2+1}; i<XLEN-1; i+=2) {
         //std::cerr << "(" << i << "," << j << ")" << std::endl;
         u(i,j) = 0.25*(delta*delta*f(i,j) +
@@ -118,9 +118,9 @@ int main(int argc, char ** argv) {
     } // for
 
     // Black points
-    #pragma omp parallel
+    #pragma omp parallel for
     for(size_t j{1}; j<YLEN-1; ++j) {
-      #pragma omp parallel
+      #pragma omp parallel for
       for(size_t i{j%2+1}; i<XLEN-1; i+=2) {
         //std::cerr << "(" << i << "," << j << ")" << std::endl;
         u(i,j) = 0.25*(delta*delta*f(i,j) +
@@ -150,14 +150,14 @@ int main(int argc, char ** argv) {
     } // for
   } // for
 
-  std::ofstream residual("residual.dat", std::ofstream::out);
+  std::ofstream error("error.dat", std::ofstream::out);
 
   for(size_t j{0}; j<YLEN; ++j) {
     const double y = j*delta;
     for(size_t i{0}; i<XLEN; ++i) {
       const double x = i*delta;
       l2(i,j) = sqrt(SQR(s(i,j) - u(i,j)));
-      residual << x << " " << y << " " << l2(i,j) << std::endl;
+      error << x << " " << y << " " << l2(i,j) << std::endl;
     } // for
   } // for
 
