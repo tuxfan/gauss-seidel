@@ -7,6 +7,4 @@ YLEN="`echo $YLEN`"
 set dgrid3d XLEN, YLEN
 set terminal x11
 splot 'solution.dat' u 1:2:3 w pm3d palette
-set terminal x11 1
-splot 'error.dat' u 1:2:3 w pm3d palette
 pause -1

@@ -34,10 +34,11 @@ private:
 }; // struct field_t
 
 const double PI = 3.14159;
-const double K = 5.0;
-const double L = 5.0;
+const double K = 3.0;
+const double L = 3.0;
 
 #define SQR(x) (x)*(x)
+
 const double SQR_K_L_PI = (SQR(K) + SQR(L))*SQR(PI);
 
 int main(int argc, char ** argv) {
@@ -111,7 +112,6 @@ int main(int argc, char ** argv) {
     for(size_t j{1}; j<YLEN-1; ++j) {
       #pragma omp parallel for
       for(size_t i{(j-1)%2+1}; i<XLEN-1; i+=2) {
-        //std::cerr << "(" << i << "," << j << ")" << std::endl;
         u(i,j) = 0.25*(delta*delta*f(i,j) +
             u(i+1,j) + u(i-1,j) + u(i,j+1) + u(i,j-1)); 
       } // for
@@ -122,7 +122,6 @@ int main(int argc, char ** argv) {
     for(size_t j{1}; j<YLEN-1; ++j) {
       #pragma omp parallel for
       for(size_t i{j%2+1}; i<XLEN-1; i+=2) {
-        //std::cerr << "(" << i << "," << j << ")" << std::endl;
         u(i,j) = 0.25*(delta*delta*f(i,j) +
             u(i+1,j) + u(i-1,j) + u(i,j+1) + u(i,j-1)); 
       } // for
