@@ -43,7 +43,7 @@ done
 $cmake_mode \
   -DCMAKE_CXX_COMPILER=icpx \
   -DCMAKE_CXX_FLAGS="-std=c++11 -fopenmp -fopenmp-targets=csa=-fiopenmp" \
-  -DCMAKE_EXE_LINKER_FLAGS="-fopenmp -fopenmp-targets=csa=-fiopenmp" \
+  -DENABLE_RBGS=ON \
   -DCMAKE_BUILD_TYPE=Release \
   $source_dir
 
