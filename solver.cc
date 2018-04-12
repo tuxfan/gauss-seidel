@@ -65,11 +65,11 @@ int main(int argc, char ** argv) {
   std::cerr << "delta^2 = " << SQR(delta) << std::endl;
 
   // Initialize fields
-  for(size_t j{0}; j<YLEN; ++j) {
+  for(size_t j=0; j<YLEN; ++j) {
 
     const double y = j*delta;
 
-    for(size_t i{0}; i<XLEN; ++i) {
+    for(size_t i=0; i<XLEN; ++i) {
 
       const double x = i*delta;
 
@@ -92,9 +92,9 @@ int main(int argc, char ** argv) {
 #if defined (GS)
 
   // Gauss-Seidel
-  for(size_t n{0}; n<ITA; ++n) {
-    for(size_t j{1}; j<YLEN-1; ++j) {
-      for(size_t i{1}; i<XLEN-1; ++i) {
+  for(size_t n=0; n<ITA; ++n) {
+    for(size_t j=1; j<YLEN-1; ++j) {
+      for(size_t i=1; i<XLEN-1; ++i) {
         u(i,j) = 0.25*(delta*delta*f(i,j) +
             u(i+1,j) + u(i-1,j) + u(i,j+1) + u(i,j-1)); 
       } // for
@@ -103,15 +103,15 @@ int main(int argc, char ** argv) {
 
 #elif defined(RBGS)
 
-  for(size_t n{0}; n<ITA; ++n) {
+  for(size_t n(0); n<ITA; ++n) {
 
     // Red points
     #pragma omp target
     {
     #pragma omp parallel for
-    for(size_t j{1}; j<YLEN-1; ++j) {
+    for(size_t j=1; j<YLEN-1; ++j) {
       #pragma omp parallel for
-      for(size_t i{(j-1)%2+1}; i<XLEN-1; i+=2) {
+      for(size_t i=(j-1)%2+1; i<XLEN-1; i+=2) {
         u(i,j) = 0.25*(delta*delta*f(i,j) +
             u(i+1,j) + u(i-1,j) + u(i,j+1) + u(i,j-1)); 
       } // for
@@ -119,9 +119,9 @@ int main(int argc, char ** argv) {
 
     // Black points
     #pragma omp parallel for
-    for(size_t j{1}; j<YLEN-1; ++j) {
+    for(size_t j=1; j<YLEN-1; ++j) {
       #pragma omp parallel for
-      for(size_t i{j%2+1}; i<XLEN-1; i+=2) {
+      for(size_t i=j%2+1; i<XLEN-1; i+=2) {
         u(i,j) = 0.25*(delta*delta*f(i,j) +
             u(i+1,j) + u(i-1,j) + u(i,j+1) + u(i,j-1)); 
       } // for
@@ -141,9 +141,9 @@ int main(int argc, char ** argv) {
 
   std::ofstream solution("solution.dat", std::ofstream::out);
 
-  for(size_t j{0}; j<YLEN; ++j) {
+  for(size_t j=0; j<YLEN; ++j) {
     const double y = j*delta;
-    for(size_t i{0}; i<XLEN; ++i) {
+    for(size_t i=0; i<XLEN; ++i) {
       const double x = i*delta;
       solution << x << " " << y << " " << u(i,j) << std::endl;
     } // for
@@ -151,9 +151,9 @@ int main(int argc, char ** argv) {
 
   std::ofstream error("error.dat", std::ofstream::out);
 
-  for(size_t j{0}; j<YLEN; ++j) {
+  for(size_t j=0; j<YLEN; ++j) {
     const double y = j*delta;
-    for(size_t i{0}; i<XLEN; ++i) {
+    for(size_t i=0; i<XLEN; ++i) {
       const double x = i*delta;
       l2(i,j) = sqrt(SQR(s(i,j) - u(i,j)));
       error << x << " " << y << " " << l2(i,j) << std::endl;
